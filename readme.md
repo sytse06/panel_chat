@@ -1,0 +1,1 @@
+Chat interfaces for RAG and context based text augmentation using the Panel library and its new Chat Components; Panels chat components are multi modal and supports LangChain, Llamaindex, OpenAI, Mistral, Llama, and others.
