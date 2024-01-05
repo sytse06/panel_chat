@@ -14,7 +14,13 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.llms import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
+
+import chromadb
+from langchain_community.vectorstores import Chroma
+from chromadb import HttpClient
+from chromadb.config import Settings
+settings = Settings(chroma_api_impl="chromadb.api.fastapi.FastAPI")
+client = HttpClient(host=host, port=port, settings=settings)
 
 from panel_chat_examples import EnvironmentWidgetBase
 
