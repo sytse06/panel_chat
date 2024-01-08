@@ -17,11 +17,6 @@ from langchain.text_splitter import CharacterTextSplitter
 
 import chromadb
 from langchain_community.vectorstores import Chroma
-from chromadb import HttpClient
-from chromadb.config import Settings
-settings = Settings(chroma_api_impl="chromadb.api.fastapi.FastAPI")
-client = HttpClient(host=host, port=port, settings=settings)
-
 from panel_chat_examples import EnvironmentWidgetBase
 
 EXAMPLE_PDF = Path(__file__).parent / "example.pdf"
