@@ -94,6 +94,7 @@ class EnvironmentWidget(EnvironmentWidgetBase):
 
 class State(param.Parameterized):
     pdf: bytes = param.Bytes()
+    collection_name: str = param.String()
     number_of_chunks: int = param.Integer(default=2, bounds=(1, 5), step=1)
     chain_type: str = param.Selector(
         objects=["stuff", "map_reduce", "refine", "map_rerank"]
@@ -106,6 +107,7 @@ state = State()
 # Define the widgets
 pdf_input = pn.widgets.FileInput.from_param(state.param.pdf, accept=".pdf", height=50)
 text_input = pn.widgets.TextInput(placeholder="First, upload a PDF!")
+collection_name_input = pn.widgets.TextInput(placeholder="Collection name for vectors")
 chain_type_input = pn.widgets.RadioButtonGroup.from_param(
     state.param.chain_type,
     orientation="vertical",
@@ -124,6 +126,8 @@ def _get_validation_message():
         return "Please first enter an OpenAI Api key and upload a PDF!"
     if not pdf:
         return "Please first upload a PDF!"
+    if not collection_name:
+        return "Please add chatbot conversation to vector collection"
     if not openai_api_key:
         return "Please first enter an OpenAI Api key!"
     return ""
@@ -162,8 +166,8 @@ chat_interface = pn.chat.ChatInterface(
 
 
 @pn.depends(state.param.pdf, environ.param.OPENAI_API_KEY, watch=True)
-def _enable_chat_interface(pdf, openai_api_key):
-    if pdf and openai_api_key:
+def _enable_chat_interface(pdf, openai_api_key, collection_name):
+    if pdf and openai_api_key and collection_name:
         chat_interface.disabled = False
     else:
         chat_interface.disabled = True
